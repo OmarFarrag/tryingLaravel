@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('head')
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{{ asset('js/share.js') }}"></script>
     <script type="text/javascript">
 
         // Called when recommend button is clicked 
@@ -16,7 +19,10 @@
             xhttp.open("GET", '/post/'+{{$post->id}}+'/recommend', true);
             xhttp.send();
         } 
+
+        
     </script>    
+   
 @endsection
 
 
@@ -43,6 +49,10 @@
     <button onclick="recommend();">
         recommend
     </button>
+<a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>
+            
+</a>
+    
         
     
     @auth

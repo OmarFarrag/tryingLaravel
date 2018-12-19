@@ -1,4 +1,4 @@
-@extends('layouts.basic_template')
+@extends('layouts.app')
 
 @section('body')
     {!! Form::open([
@@ -8,6 +8,11 @@
         <div>
             {{Form::label('title','Title')}}
             {{Form::text('title','', ['placeholder'=>'Title'])}}
+        </div>
+
+        <div>
+            {{ Form::select('category', $categories, null) }}
+           
         </div>
 
         <div>

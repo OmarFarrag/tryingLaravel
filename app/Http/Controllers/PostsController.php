@@ -9,6 +9,8 @@ use App\models\Comment;
 use PHPUnit\Framework\Constraint\Exception;
 use App\models\Category;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\Integer;
 //use TheSeer\Tokenizer\Exception;
 
 
@@ -58,14 +60,22 @@ class PostsController extends Controller
      * Creates a new post
      * post/create
      */
+    
     public function create()
-    {
-        try{
+    {   
+        
+        // Check the user is logged in
+        // This redirects un-authorized users to login page
+        if(Auth::check()){
+            // Get the categories for the user to select from
+            try{
+                //$categories = array_map(function($x){return $x['name'];},Category::all('name')->toArray());                
+                $categories = Category::pluck('name', 'id');
+            }catch(Exception $e){
 
-        }catch(Exception $e){
-            return view('posts.error')->with('message',$dbErrorMsg);
+            }
+            return view('posts.create')->with('categories',$categories);
         }
-        return view('posts.create');
     }
 
     /**
@@ -80,7 +90,8 @@ class PostsController extends Controller
         // This returns error messages that can be displayed
         $this->validate($request,[
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'category' => 'required'
         ]);
         
         // Create the new post and save it to the database
@@ -88,13 +99,15 @@ class PostsController extends Controller
             $post = new Post();
             $post->title = $request->input('title');
             $post->body = $request->input('body');
+            $post->category_id = $request->input('category');
+            $post->author_id = auth()->user()->id;
             $post->save();
         }catch(Exception $e){
             return view('posts.error')->with('message',$dbErrorMsg);
         }
 
         
-        return redirect('post/create')->with('success','Post created');
+        return redirect('post/'.$post->id)->with('success','Post created');
     }
 
     /**
