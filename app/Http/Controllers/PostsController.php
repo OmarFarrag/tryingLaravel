@@ -11,6 +11,8 @@ use App\models\Category;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Integer;
+use Illuminate\Support\Facades\Storage;
+//use Symfony\Component\Console\Input\Input;
 //use TheSeer\Tokenizer\Exception;
 
 
@@ -91,8 +93,15 @@ class PostsController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'body' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+            'image' => 'required|max:1999'
         ]);
+
+        $fileNameWithExt = Input::file('image')->getClientOriginalName();
+        $fileName = pathinfo( $fileNameWithExt, PATHINFO_FILENAME);
+        $extension = $request->file('image')->getClientOriginalExtension();
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        $path = $request->file('image')->storeAs('public/posts_images',$fileNameToStore);    
         
         // Create the new post and save it to the database
         try{
@@ -100,7 +109,9 @@ class PostsController extends Controller
             $post->title = $request->input('title');
             $post->body = $request->input('body');
             $post->category_id = $request->input('category');
+            $post->pic_url = $fileNameToStore;
             $post->author_id = auth()->user()->id;
+            
             $post->save();
         }catch(Exception $e){
             return view('posts.error')->with('message',$dbErrorMsg);
@@ -172,12 +183,28 @@ class PostsController extends Controller
             'body' => 'required'
         ]);
         
+        // Check if the user changed the picture
+        
+        if($request->hasFile('image')){      
+            $fileNameWithExt = Input::file('image')->getClientOriginalName();
+            $fileName = pathinfo( $fileNameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            $path = $request->file('image')->storeAs('public/posts_images',$fileNameToStore);    
+        }
+
         // Retrieve the post from the database, edit it, amnd save
         $post;
         try{
             $post = Post::find($id);
             $post->title = $request->input('title');
             $post->body = $request->input('body');
+            if($request->hasFile('image')){
+                // Delete the old image
+                Storage::delete('public/posts_images/'.$post->pic_url);
+                // Set the new image
+                $post->pic_url = $fileNameToStore;
+            }
             $post->save();
         }catch(Exception $e){
             return view('posts.error')->with('message',$dbErrorMsg);
@@ -232,5 +259,20 @@ class PostsController extends Controller
 
         
         return response()->json(['ok' => 'ok']); // Return OK to user's browser
+    }
+
+
+    public function addComment($id){
+        
+        try{
+            DB::table('comments')->insert(array('commenter_id'=>auth()->user()->id,
+            'post_id'=>$id,
+            'body'=>Input::get('comment')));
+        }catch(Exception $e){
+            response()->json(['success' => 'success'], 200);
+        }
+
+        
+        return redirect('post/'.$id)->with('success','Comment added !');
     }
 }

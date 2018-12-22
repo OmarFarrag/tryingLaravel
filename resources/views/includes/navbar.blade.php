@@ -20,8 +20,15 @@
                         
                     <li class="navbar-nav mr-auto">
                     <a class="nav-link" href="{{route('categories')}}">Categories</a>
+                    </li>
+
+                    <!-- Community button-->
+                    @auth
+                        <li class="navbar-nav mr-auto">
+                            <a class="nav-link" href="{{route('community')}}">Community</a>
                         </li>
-                        
+                    @endauth        
+
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">

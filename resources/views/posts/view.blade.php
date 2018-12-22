@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="{{ asset('js/share.js') }}"></script>
     <script type="text/javascript">
@@ -19,7 +19,9 @@
             xhttp.open("GET", '/post/'+{{$post->id}}+'/recommend', true);
             xhttp.send();
         } 
+        
 
+        
         
     </script>    
    
@@ -28,13 +30,15 @@
 
 
 @section('body')
-    <img src="cinqueterre.jpg" class="img-responsive" alt="Cinque Terre"> 
+    <img src="/storage/posts_images/{{$post->pic_url}}" class="img-responsive" alt="Cinque Terre"> 
     <h1>{{$post->title}}</h1>
    
     <div> {!!$post->body!!}</div>
     <br/>
     <div id='noOfRecomm'>{{$post->no_of_recomm}}</div>
     <br/>
+
+    <!-- comments section-->
     @foreach ($comments as $comment)
         {{$comment->commenter->name}}
         <br/>
@@ -49,9 +53,9 @@
     <button onclick="recommend();">
         recommend
     </button>
-<a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>
+    <a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>
             
-</a>
+    </a>
     
         
     
@@ -60,6 +64,24 @@
         @if(Auth::user()->id == $post->author_id)
             <a href="/post/{{$post->id}}/edit">edit</a>
         @endif
+
+        <!-- Add Comment Field -->
+        
+            <br>
+            {!! Form::open([
+                'action' => ['PostsController@addComment',$post->id],
+                'method' => 'POST']) !!}
+        
+               
+                <div>
+                   
+                    {{Form::textarea('comment','', ['placeholder'=>'AddComment', 'id'=>'comment'])}}
+                </div>
+
+                {{Form::submit('Submit')}}
+                
+            {!! Form::close() !!}
+
     @endauth
     
 @endsection

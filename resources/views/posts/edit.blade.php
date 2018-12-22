@@ -3,7 +3,7 @@
 @section('body')
     {!! Form::open([
         'action' => ['PostsController@update',$post->id],
-        'method' => 'POST']) !!}
+        'method' => 'POST', 'enctype'=>'multipart/form-data']) !!}
 
         <div>
             {{Form::label('title','Title')}}
@@ -13,6 +13,10 @@
         <div>
             {{Form::label('body','Body')}}
             {{Form::textarea('body',$post->body, ['placeholder'=>'Body', 'id'=>'article-ckeditor'])}}
+        </div>
+
+        <div class="form-group">
+            {{Form::file('image')}}
         </div>
         
         @include('includes.messages')
