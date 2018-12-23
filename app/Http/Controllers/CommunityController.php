@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\View;
 
 use Symfony\Component\Console\Input\Input;
 
+use Illuminate\Foundation\Auth\User;
+use App\models\Post;
+
 class CommunityController extends Controller
 {
     //
@@ -57,5 +60,43 @@ class CommunityController extends Controller
 
             }
         }
+    }
+
+
+    // Show a user's profile 
+    // Public 
+    public function showProfile($id){
+        try{
+            // Get the user
+            $user = User::find($id);
+          
+            // Get the articles posted by the user
+            $posts = Post::where('author_id',$id)->get();
+          
+            // Check if the user can follow the user we are in his profile
+            $already = DB::table('followings')->where('follower_id', auth()->user()->id)->where('following_id',$id)->get();
+            $canFollow = true;
+            if($already->count() != 0 || $id == auth()->user()->id){
+                $canFollow = false;
+            }
+
+            // Get number of followings
+            $noOfFollowings = DB::table('followings')->where('follower_id',$id)->get()->count();
+            // Get number of followers
+            $noOfFollowers = DB::table('followings')->where('following_id',$id)->get()->count();
+        }catch(Exception $e){
+
+        }
+
+        // If invalid ID display error page
+        if($user == null){
+            return View('posts.error')->with('message',"The user wasn't found");
+        }
+        return View('community.profile')
+            ->with('user',$user)
+            ->with('posts',$posts)
+            ->with('canFollow',$canFollow)
+            ->with('noOfFollowings',$noOfFollowings)
+            ->with('noOfFollowers',$noOfFollowers);
     }
 }

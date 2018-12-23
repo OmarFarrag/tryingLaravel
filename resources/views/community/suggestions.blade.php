@@ -28,14 +28,12 @@
 
 
 @section('body')
-    @if (count($users) > 0)
-        
-    
-    @foreach ($users as $user)
+    @if (count($users) > 0)    
+        @foreach ($users as $user)
        
             {{$user->name}}
         <button id='{{$user->id}}' onclick="follow({{$user->id}});">Follow</button>
        <br>
-    @endforeach
+        @endforeach
     @endif
 @endsection

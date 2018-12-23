@@ -34,3 +34,5 @@ Route::post('/post/{id}/addcomment','PostsController@addComment');
 Route::get('/community','CommunityController@exploreAuthors')->name('community');
 
 Route::get('/follow/{id}','CommunityController@follow');
+
+Route::get('//community/{id}','CommunityController@showProfile');
