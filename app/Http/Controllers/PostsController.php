@@ -231,7 +231,8 @@ class PostsController extends Controller
             // Get the search key from the query string parameters
             $searchKey = Input::get('key');
             // Get posts with title containing the search key
-            $posts = Post::where('title', 'LIKE', '%'.$searchKey.'%')->get();       
+            $posts = Post::where('title', 'LIKE', '%'.$searchKey.'%')->join('users', 'posts.author_id', '=','users.id' )
+            ->select('posts.pic_url','posts.id','users.name','posts.body','posts.title')->get();       
         }catch(Exception $e){
             return view('posts.error')->with('message',$dbErrorMsg);
         }

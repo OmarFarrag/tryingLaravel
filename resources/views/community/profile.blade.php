@@ -9,40 +9,7 @@
                 font-family: arial;
             }
 
-            .right {
-                position: absolute;
-  right: 0px;
-  width: 300px;
-  border: 3px solid #73AD21;
-  padding: 10px;
-  margin:10px;
-    
-}
-.container {
-    border: 2px solid #ccc;
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 16px;
-    margin: 15px;
 
-}
-    .container::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.container img {
-  float: left;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-
-.container span {
-  font-size: 20px;
-       margin: 15px;
-
-}
 
         .split {
             height: 80%;
@@ -102,19 +69,7 @@
       <div>
            
 
-            <div class=" right">
-                    <h2> Sponsored </h2>
-                 <div  class="container">
-                    <img src="homepage.JPG">
-                    <p><span>Chris Fox.</span> CEO at Mighty Schools.</p>
-                    <p>John Doe saved us from a web disaster.</p>
-                 </div>
-                 <div class="container">
-                     <img src="homepage.JPG">
-                     <p><span>Chris Fox.</span> CEO at Mighty Schools.</p>
-                     <p>John Doe saved us from a web disaster.</p>
-                 </div>
-               </div>
+          
 
           @if(count($posts)>0)
           <div class=" px-0 py-4">
@@ -136,7 +91,7 @@
           
            <!-- else -->
           @else
-               <h2> No posts</h2>
+               <h2 class="py-4"> No posts</h2>
           @endif
 
 @endsection
