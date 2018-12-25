@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 //use Symfony\Component\Console\Input\Input;
 //use TheSeer\Tokenizer\Exception;
 
@@ -294,4 +295,53 @@ class PostsController extends Controller
         
         return redirect('post/'.$id)->with('success','Comment added !');
     }
+
+    public function savePost ($id){
+        //Check user is authenticated
+        if(Auth::check()){
+            if($id!=null){
+                //check post exists and not saved before
+                if(count(DB::table('posts')->where('id',$id)->get()) != 0 && count(DB::table('saved_posts')->where('post_id',$id)->where('user_id',auth()->user()->id)->get()) ==0 ){
+
+                    DB::table('saved_posts')->insert(
+                        array(
+                        'post_id'=>$id,
+                        'user_id'=>auth()->user()->id 
+                        )
+                    );
+
+                    response()->json(['success' => 'success'], 200);
+                    return;
+                }
+            }
+            response()->json(['success' => 'false'], 300);
+            return;
+        }
+    }
+
+    public function showSavedPosts($id){
+
+        //Check user is authenticated
+        if(Auth::check()){
+            // Check user is opening his saved posts not other's
+            if(auth()->user()->id == $id){
+                $postsIdsObj = DB::table('saved_posts')->where('user_id',$id)->get();
+
+                $posts = array();
+                //Check user has saved posts
+                if(count($postsIdsObj) > 0){
+                    $postsIdsJson = json_decode($postsIdsObj,true);
+                    $postsIds = array();
+                    foreach($postsIdsJson as $post){
+                        array_push($postsIds,$post['post_id']);
+                    }
+                    $posts = DB::table('posts')->whereIn('id',$postsIds)->get();  
+                }
+                return View('posts.saved_posts')->with('posts',$posts);
+                
+            }else{
+                return redirect('/home');
+            }
+        }
+    } 
 }

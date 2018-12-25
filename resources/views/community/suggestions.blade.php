@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 
-    // Called when recommend button is clicked 
+    // Called when follow button is clicked 
     // Fires a get request 
     function follow(id){
         var xhttp = new XMLHttpRequest();

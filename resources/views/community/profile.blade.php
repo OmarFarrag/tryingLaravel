@@ -89,6 +89,7 @@
               
           
           <a href="/post/create"><button id="{{$user->id}}" class="btn btn-primary " >Add post</button>   </a>
+          
           @endif
           @endauth
            

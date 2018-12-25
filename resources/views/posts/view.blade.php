@@ -19,6 +19,19 @@
             xhttp.open("GET", '/post/'+{{$post->id}}+'/recommend', true);
             xhttp.send();
         } 
+
+        // Called when save button is clicek 
+        function save(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                // When call completes with Ok, remove the button
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('saveId').remove();
+                }
+            };
+            xhttp.open("GET", '/save/'+{{$post->id}}, true);
+            xhttp.send();
+        }
         
 
         
@@ -88,11 +101,15 @@ a:hover {
     <h  id='noOfRecomm' >{{$post->no_of_recomm}}</h> likes
     <!-- share button-->
     <a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>      
-    </a>
+    
     
         
     
     @auth
+        <!-- only post author can edit it-->
+        @if(Auth::user()->id != $post->author_id)
+            <a id="saveId"  href="#" onclick="save();return false;">save</a>
+        @endif
         <!-- only post author can edit it-->
         @if(Auth::user()->id == $post->author_id)
             <a href="/post/{{$post->id}}/edit">edit</a>
