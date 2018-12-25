@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark" >
         
-            <a class="navbar-brand" href="/">
+            <a style="color:orange;" class="navbar-brand" href="/">
                 Blogger
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -13,19 +13,19 @@
                 <ul class="navbar-nav mr-auto">
                 
                     @auth  
-                        <li class="navbar-nav mr-auto">
-                                <a class="nav-link" href="{{route('home')}}">Home</a>
+                        <li class="navbar-nav mr-auto" >
+                                <a style="color:white;" class="nav-link" href="{{route('home')}}" >Home</a>
                         </li>
                     @endauth
                         
                     <li class="navbar-nav mr-auto">
-                    <a class="nav-link" href="{{route('categories')}}">Categories</a>
+                    <a style="color:white;"  class="nav-link" href="{{route('categories')}}">Categories</a>
                     </li>
 
                     <!-- Community button-->
                     @auth
                         <li class="navbar-nav mr-auto">
-                            <a class="nav-link" href="{{route('community')}}">Community</a>
+                            <a style="color:white;"  class="nav-link" href="{{route('community')}}">Community</a>
                         </li>
                     @endauth        
 
@@ -40,16 +40,16 @@
                     @guest
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Become a member</a>
+                                <a style="color:white;" class="nav-link" href="{{ route('register') }}">Become a member</a>
                             </li>
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a style="color:white;" class="nav-link" href="{{ route('login') }}">Login</a>
                         </li>
                        
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a style="color:white;"  id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
