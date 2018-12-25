@@ -23,6 +23,14 @@
             opacity: 0.6;
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
         }
+        
+        a{
+            color:darkgrey;
+        }
+        a:hover{
+            text-decoration: none;
+            
+        }
     </style>
 @endsection
 

@@ -20,15 +20,17 @@
 @endsection
 
 @section('body')
+        @include('includes.sidebar')
+        
         @if(count($posts)>0)
         <div class=" px-5">
             @foreach ($posts as $post)
             <div class="row p-4">
                     <a href="post/{{$post->id}}" >   
-                <img class="left-side-pic" src="{{$post->pic_url}}" />
+                <img class="left-side-pic" src="/storage/posts_images/{{$post->pic_url}}" />
                     </a>
                     <div class="col-md-6">
-                            <a  href="post/{{$post->id}}">  {{$post->title}} </a><br>
+                            <a  href="post/{{$post->id}}" style="font-weight: bold;">  {{$post->title}} </a><br>
                             <a href="post/{{$post->id}}" ><small> {{$post->name}}</small> </a><br>
                             <a href="post/{{$post->id}}">  {{substr($post->body,0,230)."...."}} </a>
                     </div>

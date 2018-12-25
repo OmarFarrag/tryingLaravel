@@ -69,17 +69,23 @@ class CommunityController extends Controller
         try{
             // Get the user
             $user = User::find($id);
+            // If invalid ID display error page
+            if(is_null($user)){
+                return View('posts.error')->with('message',"The user wasn't found");
+            }
           
             // Get the articles posted by the user
             $posts = Post::where('author_id',$id)->get();
-          
-            // Check if the user can follow the user we are in his profile
-            $already = DB::table('followings')->where('follower_id', auth()->user()->id)->where('following_id',$id)->get();
-            $canFollow = true;
-            if($already->count() != 0 || $id == auth()->user()->id){
-                $canFollow = false;
+            
+            $canFollow = false;
+            if(auth()->user() != null){
+                // Check if the user can follow the user we are in his profile
+                $already = DB::table('followings')->where('follower_id', auth()->user()->id)->where('following_id',$id)->get();
+                $canFollow = true;
+                if($already->count() != 0 || $id == auth()->user()->id){
+                    $canFollow = false;
+                }
             }
-
             // Get number of followings
             $noOfFollowings = DB::table('followings')->where('follower_id',$id)->get()->count();
             // Get number of followers

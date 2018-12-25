@@ -35,4 +35,4 @@ Route::get('/community','CommunityController@exploreAuthors')->name('community')
 
 Route::get('/follow/{id}','CommunityController@follow');
 
-Route::get('//community/{id}','CommunityController@showProfile');
+Route::get('/community/{id}','CommunityController@showProfile');

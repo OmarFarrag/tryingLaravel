@@ -34,7 +34,7 @@
             margin:10px;
                 
         }
-        .container {
+        .container1 {
             border: 2px solid #ccc;
             background-color: #eee;
             border-radius: 1px;
@@ -42,19 +42,19 @@
             margin: 15px;
 
         }
-        .container::after {
+        .container1::after {
             content: "";
             clear: both;
             display: table;
         }
 
-        .container img {
+        .container1 img {
         float: left;
         margin-right: 20px;
         border-radius: 50%;
         }
 
-        .container span {
+        .container1 span {
         font-size: 20px;
             margin: 15px;
 
@@ -85,20 +85,7 @@
 <body>
     <div id="app">
         @include('includes.navbar')
-        <div class=" right">
-                <h2> Sponsored </h2>
-                <hr/>
-             <div  class="container">
-                <img src="{{url('images/user_no_image.png')}}">
-                <p><span>Chris Fox.</span> CEO at Mighty Schools.</p>
-                <p>John Doe saved us from a web disaster.</p>
-             </div>
-             <div class="container">
-                 <img src="{{url('images/user_no_image.png')}}">
-                 <p><span>Chris Fox.</span> CEO at Mighty Schools.</p>
-                 <p>John Doe saved us from a web disaster.</p>
-             </div>
-           </div>
+       
         <main >
             @yield('body')
         </main>

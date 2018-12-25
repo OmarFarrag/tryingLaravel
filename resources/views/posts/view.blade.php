@@ -25,36 +25,69 @@
         
     </script>    
    
+    <style>
+        .title{
+            font-weight: bold;
+        } 
+
+        .post-body { 
+            font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 100;
+            line-height: 26.4px; 
+            }
+        
+        .fa {
+            font-size: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+.fa:hover {
+  color: darkblue;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+       
+    </style>
 @endsection
 
 
 
 @section('body')
-    <img src="/storage/posts_images/{{$post->pic_url}}" class="img-responsive" alt="Cinque Terre"> 
-    <h1>{{$post->title}}</h1>
-   
-    <div> {!!$post->body!!}</div>
+    
+    <div class="container">
+            <div class="row py-4">
+                    <div class="col-md-2">
+                            <img src="{{url('images/user_no_image.png')}}" class="img-responsive" alt="Cinque Terre">
+                    </div>
+                    <h2 class="col-md-4" style="margin-top:30px;"><a href="/community/{{$author->id}}">{{$author->name}}</a><br><small>{{explode(' ',$post->created_at)[0]}}</small></h2>
+                    
+                </div>
+                
+        <div class="row">
+            <div class="col-md-1">
+                    <img src="/storage/posts_images/{{$post->pic_url}}" class="img-responsive" alt="Cinque Terre">
+            </div>
+        </div>
+    
+    
+        <h1 class="title">{{$post->title}}</h1>
+        <br>
+        
+    <div class="post-body"> {!!$post->body!!}</div>
     <br/>
-    <div id='noOfRecomm'>{{$post->no_of_recomm}}</div>
-    <br/>
-
-    <!-- comments section-->
-    @foreach ($comments as $comment)
-        {{$comment->commenter->name}}
-        <br/>
-        {{explode(' ',$comment->created_at)[0]}}
-        <br/>
-        body: {{$comment->body}}
-        <br/>
-
-    @endforeach
-
     <!-- Recommend button-->
-    <button onclick="recommend();">
-        recommend
-    </button>
-    <a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>
-            
+    <i onclick="recommend();" class="fa fa-thumbs-up"></i>
+    <!-- No of likes -->
+    <h  id='noOfRecomm' >{{$post->no_of_recomm}}</h> likes
+    <!-- share button-->
+    <a  href="https://www.facebook.com/sharer/sharer.php?u=http://blogger.dev/post/{{$post->id}}">share</a>      
     </a>
     
         
@@ -63,25 +96,44 @@
         <!-- only post author can edit it-->
         @if(Auth::user()->id == $post->author_id)
             <a href="/post/{{$post->id}}/edit">edit</a>
+            
         @endif
 
         <!-- Add Comment Field -->
-        
+        <br>
             <br>
             {!! Form::open([
                 'action' => ['PostsController@addComment',$post->id],
                 'method' => 'POST']) !!}
         
                
-                <div>
-                   
-                    {{Form::textarea('comment','', ['placeholder'=>'AddComment', 'id'=>'comment'])}}
-                </div>
-
-                {{Form::submit('Submit')}}
                 
+                  <div class="row"> 
+                    {{Form::textarea('comment','', ['placeholder'=>' Add comment', 'id'=>'comment','style'=>'height:50px;width:700px;margin-left:15px;'])}}
+               
+               
+                {{Form::submit('Submit',['class'=>'btn btn-large btn-primary openbutton','style'=>'height:50px;margin-left:20px;'])}}
+                  </div>
             {!! Form::close() !!}
 
     @endauth
     
+                  <br/><br/>
+
+     <!-- comments section-->
+     @foreach ($comments as $comment)
+
+     <hr>
+     <h5>{{$comment->commenter->name}}</h5>
+     
+     <small>{{explode(' ',$comment->created_at)[0]}}</small>
+     <br/>
+     <p>{{$comment->body}}</p>
+    
+     
+    
+     
+ @endforeach
+
+    </div>
 @endsection
