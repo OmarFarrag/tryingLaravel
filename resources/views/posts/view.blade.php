@@ -39,6 +39,7 @@
     </script>    
    
     <style>
+      
         .title{
             font-weight: bold;
         } 
@@ -85,7 +86,7 @@ a:hover {
                 
         <div class="row">
             <div class="col-md-1">
-                    <img src="/storage/posts_images/{{$post->pic_url}}" class="img-responsive" alt="Cinque Terre">
+                    <img src="/storage/posts_images/{{$post->pic_url}}" class="img-responsive " alt="Cinque Terre">
             </div>
         </div>
     
@@ -107,7 +108,7 @@ a:hover {
     
     @auth
         <!-- only post author can edit it-->
-        @if(Auth::user()->id != $post->author_id)
+        @if(Auth::user()->id != $post->author_id && !$isSaved)
             <a id="saveId"  href="#" onclick="save();return false;">save</a>
         @endif
         <!-- only post author can edit it-->

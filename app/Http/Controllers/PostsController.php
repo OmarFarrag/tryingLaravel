@@ -141,12 +141,14 @@ class PostsController extends Controller
             }
             $comments = $post->comment;
             $author = DB::table('users')->where('id',$post->author_id)->first();
+            $isSavedC = DB::table('saved_posts')->where('post_id',$id)->where('user_id',auth()->user()->id)->count();
+            $isSaved = $isSavedC==0? false : true;
 
         }catch(Exception $e){
             return view('posts.error')->with('message',$dbErrorMsg);
         }
         
-        return view('posts.view')->with('post',$post)->with('comments',$comments)->with('author',$author);
+        return view('posts.view')->with('post',$post)->with('comments',$comments)->with('author',$author)->with('isSaved',$isSaved);
     }
 
     /**

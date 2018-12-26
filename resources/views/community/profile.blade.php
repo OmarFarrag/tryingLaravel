@@ -25,7 +25,11 @@
             }
 
 
-
+        .container img {
+  float: left;
+  margin-right: 20px;
+  border-radius: 50%;
+}
         .split {
             height: 80%;
             
@@ -37,6 +41,14 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        .Postimage
+    {
+        width:40%;
+        border-radius: 10px;
+        height: 200px;  
+    }
+
 
         .left {
             left: 0;
@@ -98,7 +110,7 @@
                @foreach ($posts as $post)
                <div class="py-4">
                <div class="card" style="col-md-8" >
-               <img class="card-img-top" src="/storage/posts_images/{{$post->pic_url}}" alt="Card image" style="width:100%">
+               <img class="card-img-top Postimage" src="/storage/posts_images/{{$post->pic_url}}" alt="Card image" style="width:100%">
                     <div class="card-body">
                       <h4 class="card-title">{{$post->title}}</h4>
                       <p class="card-text">{{substr($post->body,0,100)."..."}}</p>
